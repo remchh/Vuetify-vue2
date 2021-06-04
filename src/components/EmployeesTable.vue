@@ -6,7 +6,7 @@
     class="elevation-1"
     @click:row="selectRow"
     :multi-sort="true"
-    dark
+    
   ></v-data-table>
 </template>
 
