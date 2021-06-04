@@ -29,6 +29,35 @@
             Close
             </v-btn>
         </v-snackbar>
+
+      <v-row>
+        <v-col cols="12" md="8">
+          <EmployeesTable :employees="employees" @select-employee="setEmployee" />
+        </v-col>
+        <v-col cols="12" md="4">
+          <EventTimeline :timeline="timeline" />
+        </v-col>
+      </v-row>
+  
+      <v-row id="below-the-fold" v-intersect='showMoreContent'>
+        <v-col cols="12" md="8">
+          <EmployeesTable :employees="employees" @select-employee="setEmployee" />
+        </v-col>
+        <v-col cols="12" md="4">
+          <EventTimeline :timeline="timeline" />
+        </v-col>
+      </v-row>
+  
+      <v-row v-if="loadNewContent" id="more-content">
+        <v-col>
+          <v-skeleton-loader
+            ref="skeleton"
+            type="table"
+            class="mx-auto"
+          ></v-skeleton-loader>
+        </v-col>
+      </v-row>
+
     </v-container>
 </template>
 
@@ -53,6 +82,7 @@ import statisticsData from '../data/statistics.json'
     },
     data () {
       return {
+        loadNewContent: false,
         selectedEmployee: {
           name: '',
           title: ''
@@ -70,6 +100,9 @@ import statisticsData from '../data/statistics.json'
             this.snackbar = true
             this.selectedEmployee.name = event.name
             this.selectedEmployee.title = event.title
+        },
+        showMoreContent(entries){
+          this.loadNewContent = entries[0].isIntersecting
         }
     }
   }
